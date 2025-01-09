@@ -20,6 +20,10 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
 	public DbSet<ShoppingCart> ShoppingCarts { get; set; }
 	public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
 	public DbSet<Brand> Brands { get; set; }
+	public DbSet<SpecificationDefinition> SpecificationDefinitions { get; set; }
+	public DbSet<ProductDetails> ProductSpecifications { get; set; }
+	public DbSet<Order> Orders	 { get; set; }
+	public DbSet<OrderItem> OrderItems { get; set; }
 
 	protected override void OnModelCreating(ModelBuilder builder)
 	{
@@ -63,6 +67,25 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
 			.WithMany()
 			.HasForeignKey(sci => sci.ProductId)
 			.OnDelete(DeleteBehavior.Cascade);
+			
+			
+		builder.Entity<SpecificationDefinition>()
+			.HasOne(sd => sd.ProductType)
+			.WithMany(pt => pt.SpecificationDefinitions)
+			.HasForeignKey(sd => sd.ProductTypeId)
+			.OnDelete(DeleteBehavior.Cascade);
+			
+		builder.Entity<ProductDetails>()
+			.HasOne(ps => ps.Product)
+			.WithMany(p => p.ProductDetails)
+			.HasForeignKey(ps => ps.ProductId)
+			.OnDelete(DeleteBehavior.Cascade);
+			
+		builder.Entity<ProductDetails>()
+			.HasOne(ps => ps.SpecificationDefinition)
+			.WithMany()
+			.HasForeignKey(ps => ps.SpecificationDefinitionId)
+			.OnDelete(DeleteBehavior.Restrict);
 
 	}
 }

@@ -26,5 +26,8 @@ namespace Project.Models
 		
 		public int BrandId { get; set; }
 		public Brand? Brand { get; set; }
+		
+		
+		public ICollection<ProductDetails>? ProductDetails { get; set; }
 	}
 }

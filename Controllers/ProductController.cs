@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using CloudinaryDotNet.Actions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
@@ -50,7 +52,7 @@ namespace Project.Controllers
 			var typeSpec = new TypeListSpecification();
 			var types = await _repository.ListAsync<ProductType>(typeSpec);
 			var typeList = new SelectList(types, "Id", "Name", specParams.TypeId);
-			
+
 			var categorySpec = new CategoryListSpecification();
 			var categories = await _repository.ListAsync(categorySpec);
 			var categoryList = new SelectList(categories, "Id", "Name", specParams.CategoryId);
@@ -66,24 +68,32 @@ namespace Project.Controllers
 
 			return View(viewModel);
 		}
-		
+
 		public async Task<IActionResult> Details(int id)
 		{
 			var spec = new ProductWithDetailSpecification(id);
 			var product = await _repository.GetEntityWithSpec(spec);
-			
-			if(product == null)
+
+			if (product == null)
 			{
 				return NotFound();
 			}
-			
+
 			return View(product);
 		}
+
+		
+		
+		
+		
+		
+
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()
 		{
 			return View("Error!");
 		}
+		
 	}
 }

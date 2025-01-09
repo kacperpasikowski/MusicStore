@@ -18,6 +18,8 @@ namespace Project.Models
 		public Category? Category { get; set; }
 
 		public ICollection<Product> Products { get; set; }
+		
+		public ICollection<SpecificationDefinition> SpecificationDefinitions { get; set; }
 
 
 		public ProductType()

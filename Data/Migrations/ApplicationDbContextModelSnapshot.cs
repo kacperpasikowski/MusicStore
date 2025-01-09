@@ -275,6 +275,64 @@ namespace Project.Data.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("Project.Models.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Project.Models.OrderItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderItems");
+                });
+
             modelBuilder.Entity("Project.Models.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -317,6 +375,32 @@ namespace Project.Data.Migrations
                     b.HasIndex("ProductTypeId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Project.Models.ProductDetails", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SpecificationDefinitionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("SpecificationDefinitionId");
+
+                    b.ToTable("ProductSpecifications");
                 });
 
             modelBuilder.Entity("Project.Models.ProductType", b =>
@@ -376,6 +460,9 @@ namespace Project.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("MaxQuantity")
+                        .HasColumnType("int");
+
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
@@ -392,6 +479,39 @@ namespace Project.Data.Migrations
                     b.HasIndex("ShoppingCartId");
 
                     b.ToTable("ShoppingCartItems");
+                });
+
+            modelBuilder.Entity("Project.Models.SpecificationDefinition", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("DataType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsRequired")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Options")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductTypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductTypeId");
+
+                    b.ToTable("SpecificationDefinitions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -445,6 +565,17 @@ namespace Project.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Project.Models.OrderItem", b =>
+                {
+                    b.HasOne("Project.Models.Order", "Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("Project.Models.Product", b =>
                 {
                     b.HasOne("Project.Models.Brand", "Brand")
@@ -462,6 +593,25 @@ namespace Project.Data.Migrations
                     b.Navigation("Brand");
 
                     b.Navigation("ProductType");
+                });
+
+            modelBuilder.Entity("Project.Models.ProductDetails", b =>
+                {
+                    b.HasOne("Project.Models.Product", "Product")
+                        .WithMany("ProductDetails")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Project.Models.SpecificationDefinition", "SpecificationDefinition")
+                        .WithMany()
+                        .HasForeignKey("SpecificationDefinitionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("SpecificationDefinition");
                 });
 
             modelBuilder.Entity("Project.Models.ProductType", b =>
@@ -504,6 +654,17 @@ namespace Project.Data.Migrations
                     b.Navigation("ShoppingCart");
                 });
 
+            modelBuilder.Entity("Project.Models.SpecificationDefinition", b =>
+                {
+                    b.HasOne("Project.Models.ProductType", "ProductType")
+                        .WithMany("SpecificationDefinitions")
+                        .HasForeignKey("ProductTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProductType");
+                });
+
             modelBuilder.Entity("Project.Models.AppUser", b =>
                 {
                     b.Navigation("ShoppingCart");
@@ -519,9 +680,21 @@ namespace Project.Data.Migrations
                     b.Navigation("ProductTypes");
                 });
 
+            modelBuilder.Entity("Project.Models.Order", b =>
+                {
+                    b.Navigation("OrderItems");
+                });
+
+            modelBuilder.Entity("Project.Models.Product", b =>
+                {
+                    b.Navigation("ProductDetails");
+                });
+
             modelBuilder.Entity("Project.Models.ProductType", b =>
                 {
                     b.Navigation("Products");
+
+                    b.Navigation("SpecificationDefinitions");
                 });
 
             modelBuilder.Entity("Project.Models.ShoppingCart", b =>

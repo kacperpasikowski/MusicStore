@@ -29,104 +29,111 @@
 }
 
 
-<form method="get" class="d-flex flex-wrap">
-    <!-- Search field -->
-    <div class="form-group me-2">
-        @Html.Label("Search", "Search:")
-        @Html.TextBox("Search", Model.SpecParams.Search, new { @class = "form-control", placeholder = "Search..." })
-    </div>
+<div class="container " style="margin-top: 90px;">
+    <form method="get" class="d-flex flex-wrap">
+        <!-- Search field -->
+        <div class="form-group me-2">
+            @Html.Label("Search", "Search:")
+            @Html.TextBox("Search", Model.SpecParams.Search, new { @class = "form-control", placeholder = "Search..." })
+        </div>
 
-    <div class="form-group me-2">
-        @Html.Label("CategoryId", "Category:")
-        @Html.DropDownList("CategoryId", Model.Categories, "All", new { @class = "form-control" })
-    </div>
+        <div class="form-group me-2">
+            @Html.Label("CategoryId", "Category:")
+            @Html.DropDownList("CategoryId", Model.Categories, "All", new { @class = "form-control" })
+        </div>
 
-    <!-- Brand filter -->
-    <div class="form-group me-2">
-        @Html.Label("BrandId", "Brand:")
-        @Html.DropDownList("BrandId", Model.Brands, "All", new { @class = "form-control" })
-    </div>
+        <!-- Brand filter -->
+        <div class="form-group me-2">
+            @Html.Label("BrandId", "Brand:")
+            @Html.DropDownList("BrandId", Model.Brands, "All", new { @class = "form-control" })
+        </div>
 
-    <!-- Type filter -->
-    <div class="form-group me-2">
-        @Html.Label("TypeId", "Type:")
-        @Html.DropDownList("TypeId", Model.Types, "All", new { @class = "form-control" })
-    </div>
+        <!-- Type filter -->
+        <div class="form-group me-2">
+            @Html.Label("TypeId", "Type:")
+            @Html.DropDownList("TypeId", Model.Types, "All", new { @class = "form-control" })
+        </div>
 
-    <!-- Sorting -->
-    <div class="form-group me-2">
-        @Html.Label("Sort", "Sort By:")
-        @Html.DropDownList("Sort", new SelectList(
-            new List<SelectListItem>
+        <!-- Sorting -->
+        <div class="form-group me-2">
+            @Html.Label("Sort", "Sort By:")
+            @Html.DropDownList("Sort", new SelectList(
+                     new List<SelectListItem>
             {
-                new SelectListItem { Text = "Brak", Value = "" },
-                new SelectListItem { Text = "Price Ascending", Value = "priceasc" },
-                new SelectListItem { Text = "Price Descending", Value = "pricedesc" },
-                new SelectListItem { Text = "Name A-Z", Value = "nameasc" },
-                new SelectListItem { Text = "Name Z-A", Value = "namedesc" }
+            new SelectListItem { Text = "Brak", Value = "" },
+            new SelectListItem { Text = "Price Ascending", Value = "priceasc" },
+            new SelectListItem { Text = "Price Descending", Value = "pricedesc" },
+            new SelectListItem { Text = "Name A-Z", Value = "nameasc" },
+            new SelectListItem { Text = "Name Z-A", Value = "namedesc" }
             }, "Value", "Text", Model.SpecParams.Sort), "Wybierz", new { @class = "form-control" })
-    </div>
+        </div>
 
-    <!-- Submit and Clear buttons -->
-    <button type="submit" class="btn btn-primary me-2">Search and Filter</button>
-    <button type="button" class="btn btn-danger" onclick="window.location.href='@Url.Action("Index", "Product")'">Clear Filters</button>
-</form>
+        <!-- Submit and Clear buttons -->
 
-<script>
-    function setDropdownText(text) {
-        document.getElementById("dropdownMenuButton").textContent = text;
-    }
-</script>
+        <button type="submit" class="btn btn-primary me-2">Search and Filter</button>
+        <button type="button" class="btn btn-danger" onclick="window.location.href='@Url.Action("Index", "Product")'">
+            Clear Filters
+        </button>
 
+    </form>
 
-
-
-<h3>Products: </h3>
-
-<form action="">
-    <table class="table table-responsive table-hover">
-        @if(Model.Pagination.Data.Any()){
-            <thead>
-            <tr class="table-active">
-                <th>Id</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Photo</th>
-                <th>Price</th>
-                <th>Brand</th>
-                <th>ProductType</th>
-            </tr>
-        </thead>
+    <script>
+        function setDropdownText(text) {
+            document.getElementById("dropdownMenuButton").textContent = text;
         }
-        
-        <tbody>
+    </script>
+
+
+
+
+    <h3 class="my-3">Products: </h3>
+
+    <form action="">
+        <table class="table table-responsive table-hover">
             @if (Model.Pagination.Data.Any())
             {
-                @foreach (var product in Model.Pagination.Data)
-                {
-
-                    <tr>
-                        <td>@product.Id </td>
-                        <td><a href="Product/Details/@product.Id">@product.Name</a></td>
-                        <td>@product.Description</td>
-                        <td><img src="@Url.Content(product.PhotoUrl)" alt="Product Image"
-                                style="width: 100px; padding-right: 30px; height: auto;"></td>
-                        <td>@product.Price $</td>
-                        <td>@(product.Brand?.Name ?? "Unknown")</td>
-                        <td>@(product.ProductType?.Name ?? "Unknown")</td>
+                <thead>
+                    <tr class="table-active">
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Photo</th>
+                        <th>Price</th>
+                        <th>Brand</th>
+                        <th>ProductType</th>
                     </tr>
-                }
-            }
-            else
-            {
-                <div class="alert alert-warning text-center" role="alert">
-                    No items was found : ( 
-                </div>
+                </thead>
             }
 
-        </tbody>
-    </table>
-</form>
+            <tbody>
+                @if (Model.Pagination.Data.Any())
+                {
+                    @foreach (var product in Model.Pagination.Data)
+                    {
+
+                        <tr>
+                            <td><a href="Product/Details/@product.Id">@product.Name</a></td>
+                            <td>@product.Description</td>
+                            <td><img src="@Url.Content(product.PhotoUrl)" alt="Product Image"
+                                    style="width: 100px; padding-right: 30px; height: auto;"></td>
+                            <td>@product.Price $</td>
+                            <td>@(product.Brand?.Name ?? "Unknown")</td>
+                            <td>@(product.ProductType?.Name ?? "Unknown")</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <div class="alert alert-warning text-center" role="alert">
+                        No items was found : (
+                    </div>
+                }
+
+            </tbody>
+        </table>
+
+
+    </form>
+</div>
 
 
 

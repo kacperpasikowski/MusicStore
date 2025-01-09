@@ -13,6 +13,7 @@ namespace Project.Interfaces
 		Expression<Func<T, object>>? OrderByDescending { get; }
 
 		List<Expression<Func<T, object>>>? Includes { get; }
+		List<string> IncludeStrings { get; }
 
 
 		bool IsDistinct { get; }

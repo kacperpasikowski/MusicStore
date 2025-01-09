@@ -28,6 +28,9 @@ namespace Project.Data
 
 			query = spec.Includes.Aggregate(query, (current, include) => current.Include(include));
 
+			// Zastosuj Include z stringami (dla ThenInclude)
+			query = spec.IncludeStrings.Aggregate(query, (current, include) => current.Include(include));
+
 			if (spec.IsDistinct)
 			{
 				query = query.Distinct();
@@ -58,6 +61,9 @@ namespace Project.Data
 			}
 
 			query = spec.Includes.Aggregate(query, (current, include) => current.Include(include));
+
+			// Zastosuj Include z stringami (dla ThenInclude)
+			query = spec.IncludeStrings.Aggregate(query, (current, include) => current.Include(include));
 
 
 

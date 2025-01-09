@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using Project.Models;
 
 namespace Project.Specifications
@@ -14,6 +15,7 @@ namespace Project.Specifications
 			AddInclude(x => x.Brand!);
 			AddInclude(x => x.ProductType!);
 			AddInclude(x => x.ProductType!.Category!);
+			AddInclude(x => x.ProductDetails!);
 
 
 			ApplyPaging(specParams.PageSize * (specParams.PageIndex - 1), specParams.PageSize);
