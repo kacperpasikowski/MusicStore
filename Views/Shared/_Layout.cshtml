@@ -1,6 +1,4 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-
+﻿
 @if (TempData["Success"] != null)
 {
     <div class="alert alert-success">
@@ -56,8 +54,13 @@
                                     Admin
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="adminDropdown">
-                                    <li><a class="dropdown-item" href="@Url.Action("Index", "Admin")"> Zarządzaj
-                                            Produktami</a></li>
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("Index", "Admin")"> Zarządzaj
+                                            Produktami</a>
+                                        <a class="dropdown-item" href="@Url.Action("Index", "User")"> Zarządzaj
+                                            Użytkownikami</a>
+                                            
+                                        </li>
                                 </ul>
                             </li>
                         }
@@ -83,13 +86,13 @@
 
 
 
-    <footer class="footer mt-5">
-        <div class="bg-primary text-center py-3 text-white mt-5">
+    <footer class="footer">
+        <div class="bg-primary text-center py-3 text-white">
             <a href="/About" class="text-white text-decoration-none mx-3">O nas</a>
             <a href="/FAQ" class="text-white text-decoration-none mx-3">FAQ</a>
             <a href="/PrivacyPolicy" class="text-white text-decoration-none mx-3">Privacy Policy</a>
         </div>
-        <div class="bg-dark py-2">
+        <div class="bg-dark py-4">
             <p class="text-center text-white mb-0">© 2024 Shopenhauer. Wszelkie prawa zastrzeżone.</p>
         </div>
     </footer>

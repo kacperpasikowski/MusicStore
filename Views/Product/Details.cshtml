@@ -44,16 +44,16 @@
             <!-- Szczegóły produktu -->
             <ul class="list-group mb-4">
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <strong>Brand:</strong>
+                    <strong>Marka:</strong>
                     <span>@Model.Brand?.Name</span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <strong>Type:</strong>
+                    <strong>Typ:</strong>
                     <span>@Model.ProductType?.Name</span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <strong>Quantity In Stock:</strong>
-                    <span>@(Model.QuantityInStoct > 0 ? $"{Model.QuantityInStoct} in stock" : "Brak w magazynie")</span>
+                    <strong>Dostępna ilość:</strong>
+                    <span>@(Model.QuantityInStoct > 0 ? $"{Model.QuantityInStoct}" : "Brak w magazynie")</span>
                 </li>
 
                 <!-- Dodajemy specyfikacje produktu -->
@@ -75,7 +75,7 @@
                                         string formattedValue = detail.Value;
                                         if (bool.TryParse(detail.Value, out var boolValue))
                                         {
-                                            formattedValue = boolValue ? "Yes" : "No";
+                                            formattedValue = boolValue ? "Tak" : "Nie";
                                         }
 
                                         <li class="list-group-item d-flex justify-content-between align-items-center">

@@ -88,10 +88,16 @@ namespace Project.Controllers
 				var user = await _userManager.FindByEmailAsync(model.Email);
 				if (user != null)
 				{
+					if (!user.IsActive)
+					{
+						ModelState.AddModelError(string.Empty, "Your account has been deactivated. Please contact the administrator.");
+						return View(model);
+					}
+					
 					var result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, false);
 					if (result.Succeeded)
 					{
-						
+
 						Console.WriteLine("Logowanie zakończone sukcesem.");
 						await _shoppingCartService.MergeSessionCartWithUserAsync(user.Id);
 						if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
