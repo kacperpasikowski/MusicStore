@@ -11,6 +11,6 @@ namespace Project.Models
 		public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 		public decimal TotalAmount { get; set; }
 		public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
-		public string Status { get; set; } = "Pending";
+		public string Status { get; set; } = "Zatwierdzone";
 	}
 }
